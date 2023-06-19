@@ -23,8 +23,19 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.3.0",
+    "aframe": "^1.4.2",
+    "express": "^4.18.2",
+    "hbs": "^4.2.0",
+    "jsartoolkit5": "^0.0.4",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.0",
+    "three": "^0.153.0",
+    "three.js": "^0.77.1",
+    "threex": "^1.0.0",
+    "webxr": "^0.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

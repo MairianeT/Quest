@@ -1,0 +1,22 @@
+.body {
+    font-family: 'Neucha', cursive;
+}
+
+.header {
+    background: #c6ffec;
+    width: 100%;
+    position: -webkit-sticky;
+    position: sticky;
+    height: 100px;
+    display: flex;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 99;
+    top: 0;
+}
+
+h2 {
+    font-size: 48px;
+}
