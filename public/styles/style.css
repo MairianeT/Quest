@@ -1,5 +1,6 @@
 .body {
     font-family: 'Neucha', cursive;
+    font-size: 36px;
 }
 
 .header {
@@ -17,6 +18,85 @@
     top: 0;
 }
 
-h2 {
-    font-size: 48px;
+.btn1 {
+    font-family: 'Neucha', cursive;
+    font-size: 32px;
+    padding: 7px 30px;
+    margin: 15px;
+    outline: none;
+    border: 1px solid #c6ffec;
+    border-radius: 50px;
+    text-decoration: none;
+    background-color: #c6ffec;
+    cursor: pointer;
+    user-select: none;
+    appearance: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    transition: box-shadow 0.2s;
+}
+.btn1:focus-visible {
+    border: 1px solid #fff;
+    outline: none;
+}
+.btn1:hover {
+    transition: all 0.2s;
+    box-shadow: 0 7px 14px rgb(65 132 144 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+}
+.btn1:active {
+    background-color: #eeeeee;
+}
+.btn1:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
+.textinput {
+    padding: 7px 30px;
+    margin: 15px;
+    outline: none;
+    border: 1px solid #c6ffec;
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    appearance: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    transition: box-shadow 0.2s;
+}
+
+.textinput:hover {
+    border: 1px solid #c6ffec;
+}
+
+input[type='text'] {
+    border: none;
+    font-family: 'Neucha', cursive;
+    font-size: 32px;
+}
+
+input[type='text']:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+}
+
+.new-station {
+    margin-left: 60px;
+}
+
+.stations-list {
+    margin-left: 60px;
+}
+
+#addbtn {
+    margin: 60px auto;
+    display: block;
+}
+
+.file-requirements {
+    font-size: 24px;
+    color: #666;
+    padding: 20px;
+    margin-top: 10px;
 }

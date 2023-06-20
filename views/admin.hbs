@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="/img/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css" type="text/css">
+  <meta charset="UTF-8">
+  <meta name="keywords" content="квест, квест по станциям, ar">
+</head>
+
+<body class="body">
+
+
+<header class="header">
+  <h2>Квест по станциям</h2>
+</header>
+
+
+<main id="main">
+  <section class="new-station">
+    <h3>Создание новой станции</h3>
+    <p class="file-requirements">Файл маркера должен быть формата .patt <br> Для преобразования файла черно-белого изображения в нужный формат можно воспользоваться <a target="_blank" href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html">сайтом</a></p>
+    <label class='btn1' for='markerinput'>
+      <input type='file' id='markerinput' accept=".patt" style='display: none'>
+      Маркер
+    </label>
+
+    <label class="textinput" for='textinput'>
+      <input type='text' placeholder="Введите текст">
+    </label>
+
+    <button class="btn1" id="addbtn">Добавить</button>
+
+  </section>
+  <section class="stations-list">
+    <h3>Станции квеста</h3>
+  </section>
+</main>
+
+
+<footer class="footer">
+
+</footer>
+</body>
+</html>

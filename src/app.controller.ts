@@ -7,4 +7,10 @@ export class AppController {
   getIndexPage() {
     return { title: 'Квест по станциям' };
   }
+
+  @Get('/admin')
+  @Render('admin')
+  getAdminPage() {
+    return { title: 'Квест по станциям' };
+  }
 }
