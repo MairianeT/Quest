@@ -8,14 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css" type="text/css">
 
-
+<!--Маркеры и отображение текста-->
   <script src='/scripts/three.js'></script>
   <script src="/scripts/jsartoolkit5/artoolkit.min.js"></script>
   <script src="/scripts/jsartoolkit5/artoolkit.api.js"></script>
   <script src="/scripts/threex/threex-artoolkitsource.js"></script>
   <script src="/scripts/threex/threex-artoolkitcontext.js"></script>
   <script src="/scripts/threex/threex-arbasecontrols.js"></script>
-  <script src="/scripts/threex/threex-armarkercontrols.js"></script>  <title>Квест по станциям</title>
+  <script src="/scripts/threex/threex-armarkercontrols.js"></script>
+  <title>Квест по станциям</title>
 
 
   <meta charset="UTF-8">
@@ -31,15 +32,12 @@
 
 
 <main id="main">
+
   <script>
 
     var scene, camera, renderer, clock, deltaTime, totalTime;
 
     var arToolkitSource, arToolkitContext;
-
-    var markerRoot1, markerRoot2;
-
-    var mesh1;
 
     initialize();
     animate();
@@ -116,42 +114,51 @@
       ////////////////////////////////////////////////////////////
 
       // build markerControls
-      markerRoot1 = new THREE.Group();
-      scene.add(markerRoot1);
-      let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-        type: 'pattern', patternUrl: "data/hiro.patt",
-      })
-
       const loader = new THREE.FontLoader()
-      loader.load('font/Neucha_Regular.json', function (font) {
-        const geometry = new THREE.TextGeometry('Hello!', {
-          font: font,
-          size: 0.2,
-          height: 0.05,
-          curveSegments: 12,
-          bevelEnabled: false,
-          bevelThickness: 0,
-          bevelSize: 0,
-          bevelOffset: 0,
-          bevelSegments: 3,
+      let texts = ["Идите к B", "Идите к С", "Победа!"]
+      let patts = ["data/letterA.patt", "data/letterB.patt", "data/letterC.patt"]
+      // build markerControls
+      for (let i = 0; i < 3; i++)
+      {
+        let markerRoot1 = new THREE.Group();
+        scene.add(markerRoot1);
+        let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+          type: 'pattern', patternUrl: patts[i],
         })
-        const material = new THREE.MeshFaceMaterial([
-          new THREE.MeshPhongMaterial({
-            color: 0x000000
-          }),
-          new THREE.MeshPhongMaterial({
-            color: 0xffffff
-          }),
-        ])
 
-        const mesh = new THREE.Mesh(geometry, material)
-        mesh.name = 'text'
-        mesh.rotation.x = -Math.PI/2;
-        mesh.position.x -= 0.3;
-        mesh.position.y += 0.02;
-        markerRoot1.add(mesh)
-      })
+
+        loader.load('font/Neucha_Regular.json', function (font) {
+          const geometry = new THREE.TextGeometry(texts[i], {
+            font: font,
+            size: 0.2,
+            height: 0.05,
+            curveSegments: 12,
+            bevelEnabled: false,
+            bevelThickness: 0,
+            bevelSize: 0,
+            bevelOffset: 0,
+            bevelSegments: 3,
+          })
+          const material = new THREE.MeshFaceMaterial([
+            new THREE.MeshPhongMaterial({
+              color: 0x000000
+            }),
+            new THREE.MeshPhongMaterial({
+              color: 0xffffff
+            }),
+          ])
+
+          const mesh = new THREE.Mesh(geometry, material)
+          mesh.name = 'text'
+          mesh.rotation.x = -Math.PI/2;
+          mesh.position.x -= 0.3;
+          mesh.position.y += 0.02;
+          markerRoot1.add(mesh)
+        })
+      }
     }
+
+
 
 
     function update()

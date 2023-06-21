@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="/img/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css" type="text/css">
+  <meta charset="UTF-8">
+  <meta name="keywords" content="квест, квест по станциям, ar">
+
+  <script src='/scripts/three.js'></script>
+  <script src="/scripts/jsartoolkit5/artoolkit.min.js"></script>
+  <script src="/scripts/jsartoolkit5/artoolkit.api.js"></script>
+  <script src="/scripts/threex/threex-artoolkitsource.js"></script>
+  <script src="/scripts/threex/threex-artoolkitcontext.js"></script>
+  <script src="/scripts/threex/threex-arbasecontrols.js"></script>
+  <script src="/scripts/threex/threex-armarkercontrols.js"></script>
+
+
+
+</head>
+
+<body class="body">
+
+
+<header class="header">
+  <h2>Квест по станциям</h2>
+</header>
+
+
+<main style="margin: 0; overflow: hidden;">
+<a-scene
+  vr-mode-ui="enabled: false"
+  embedded
+  arjs="trackingMethod: geo; debugUIEnabled: false;"
+>
+  <a-entity
+    gps-entity-place="latitude: 59.9521; longitude: 30.4727;"
+    geometry="primitive: box; width: 1; height: 1; depth: 1;"
+    material="color: red;"
+  ></a-entity>
+  <a-camera-static></a-camera-static>
+</a-scene>
+<script>
+  // Замените YOUR_LATITUDE и YOUR_LONGITUDE на координаты вашего местоположения
+  const YOUR_LATITUDE = 59.9521;
+  const YOUR_LONGITUDE = 30.4727;
+
+  const entity = document.querySelector("[gps-entity-place]");
+  entity.setAttribute("gps-entity-place", {
+    latitude: YOUR_LATITUDE,
+    longitude: YOUR_LONGITUDE,
+  });
+</script>
+</main>
+
+
+<footer class="footer">
+
+</footer>
+</body>
+</html>

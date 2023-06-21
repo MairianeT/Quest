@@ -13,4 +13,10 @@ export class AppController {
   getAdminPage() {
     return { title: 'Квест по станциям' };
   }
+
+  @Get('/geo')
+  @Render('geo')
+  getGeoPage() {
+    return { title: 'Квест по станциям' };
+  }
 }
