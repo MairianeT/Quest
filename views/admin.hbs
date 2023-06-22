@@ -14,9 +14,22 @@
 
 <body class="body">
 
-
+<script>
+  if (!localStorage.getItem('isAdmin')) {
+    window.location.href = '/';
+    alert('You are not admin')
+  }
+</script>
 <header class="header">
+  <p id="name_of_user" style="margin-left: 15px; margin-right: auto"></p>
+  <script src="/scripts/src/nameOfUser.js"></script>
+
   <h2>Квест по станциям</h2>
+
+  <button id="logoutButton">
+    <svg style="cursor: pointer" width="50px" height="50px" viewBox="0 0 1.5 1.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.625 0.75h0.5m0 0 -0.156 -0.139M1.125 0.75l-0.156 0.139m0.156 -0.444V0.313a0.063 0.063 0 0 0 -0.063 -0.063H0.438a0.063 0.063 0 0 0 -0.063 0.063v0.875a0.063 0.063 0 0 0 0.063 0.063h0.625a0.063 0.063 0 0 0 0.063 -0.063v-0.132" stroke="#464455" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.0625"/></svg>
+  </button>
+  <script src="/scripts/src/logout.js"></script>
 </header>
 
 
@@ -30,14 +43,12 @@
     <article class="new-station">
       <h3>Создание новой станции</h3>
       <p class="file-requirements">Файл маркера должен быть формата .patt <br> Для преобразования файла черно-белого изображения в нужный формат можно воспользоваться <a target="_blank" href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html">сайтом</a></p>
-      <label class='btn1' for='markerinput'>
+      <label class='btn1' for='markerinput' style="width: max-content; margin-left: 0">
         <input type='file' id='markerinput' accept=".patt" style='display: none'>
         Маркер
       </label>
 
-      <label class="textinput" for='textinput'>
-        <input type='text' placeholder="Введите текст">
-      </label>
+      <input class="marker_text" type='text' placeholder="Введите текст">
 
       <button class="btn1" id="addbtn">Добавить</button>
 

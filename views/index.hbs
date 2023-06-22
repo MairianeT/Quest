@@ -20,7 +20,128 @@
   </header>
 
 
-<main id="main">
+<main id="main" style="margin: 60px auto">
+
+  <div class="tab"  id="tab-auth">
+    <button class="tablinks" onclick="openTab(event, 'sign-in')" id="defaultOpen">Вход</button>
+    <button class="tablinks" onclick="openTab(event, 'sign-up')">Регистрация</button>
+  </div>
+  <script type="text/javascript" src="/scripts/src/admin-tabs.js"></script>
+
+ <section id="sign-in" class="tabcontent">
+   <form method="post" class="form" id="loginForm">
+     <h2 style="text-align: center">Вход</h2>
+     <span style="display: block">
+      <input class="input_data" type="text" id="login-sign-in" name="text" placeholder="Логин">
+    </span>
+     <span style="display: block">
+      <input class="input_data" type="password" id="password-sign-in" name="password" placeholder="Пароль">
+    </span>
+     <button type="submit" class="btn1">Войти</button>
+   </form>
+
+   <script>
+     document.getElementById('loginForm').addEventListener('submit', function (event) {
+       event.preventDefault();
+
+       const login = document.getElementById('login-sign-in').value;
+       const password = document.getElementById('password-sign-in').value;
+
+       // Отправка данных аутентификации на сервер
+       fetch('/auth/login', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ login, password }),
+       })
+         .then((response) => response.json())
+         .then((data) => {
+           console.log(data)
+           if (data.access_token) {
+             localStorage.setItem('jwtToken', data.access_token);
+             localStorage.setItem('userId', data.id);
+             localStorage.setItem('isAdmin', data.isAdmin);
+             if (data.isAdmin) {
+               window.location.href = 'admin';
+             }
+             else {
+               window.location.href = 'ar-camera';
+             }
+
+           } else {
+             alert('Ошибка входа в систему');
+           }
+         })
+         .catch((error) => {
+           console.error('Ошибка входа в систему:', error);
+         });
+     });
+   </script>
+ </section>
+
+  <section id="sign-up" class="tabcontent">
+    <form method="post" class="form" id="loginForm2">
+      <h2 style="text-align: center">Регистрация</h2>
+      <span style="display: block">
+      <input class="input_data" type="text" id="name-sign-up" name="text" placeholder="Имя">
+    </span>
+      <span style="display: block">
+      <input class="input_data" type="text" id="login-sign-up" name="text" placeholder="Логин">
+    </span>
+      <span style="display: block">
+      <input class="input_data" type="password" id="password-sign-up" name="password" placeholder="Пароль">
+    </span>
+      <button type="submit" class="btn1">Зарегистрироваться</button>
+    </form>
+    <script>
+      document.getElementById('loginForm2').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name-sign-up').value;
+        const login = document.getElementById('login-sign-up').value;
+        const password = document.getElementById('password-sign-up').value;
+
+        // Отправка данных аутентификации на сервер
+        fetch('/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, login, password }),
+        }).then((response) => response.json()).then((data) => {
+          console.log(data);}).then(() =>
+        fetch('/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ login, password }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            if (data.access_token) {
+              localStorage.setItem('jwtToken', data.access_token);
+              localStorage.setItem('userId', data.id);
+              localStorage.setItem('isAdmin', data.isAdmin);
+              if (data.isAdmin) {
+                window.location.href = 'admin';
+              }
+              else {
+                window.location.href = 'ar-camera';
+              }
+
+            } else {
+              alert('Ошибка входа в систему');
+            }
+          })
+          .catch((error) => {
+            console.error('Ошибка входа в систему:', error);
+          }));
+      });
+    </script>
+  </section>
 
 </main>
 
@@ -28,5 +149,8 @@
 <footer class="footer">
 
 </footer>
+  <script>
+    document.getElementById("defaultOpen").click();
+  </script>
 </body>
 </html>

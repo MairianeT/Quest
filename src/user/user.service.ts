@@ -51,6 +51,7 @@ export class UserService {
       },
       select: {
         id: true,
+        isAdmin: true,
         login: true,
         password: true,
       },

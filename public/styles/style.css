@@ -5,10 +5,10 @@
 
 .header {
     background: #c6ffec;
-    width: 100%;
     position: -webkit-sticky;
     position: sticky;
     height: 100px;
+    width: 100%;
     display: flex;
     text-transform: uppercase;
     align-items: center;
@@ -17,6 +17,19 @@
     z-index: 99;
     top: 0;
     font-size: 28px;
+}
+
+.header h2 {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#logoutButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 15px;
+    margin-left: auto;
 }
 
 .header a {
@@ -57,32 +70,15 @@
     cursor: not-allowed;
 }
 
-.textinput {
+.marker_text {
+    border: 1px solid #c6ffec;
     padding: 7px 30px;
-    margin: 15px;
-    outline: none;
-    border: 1px solid #c6ffec;
     border-radius: 50px;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
-    appearance: none;
-    touch-action: manipulation;
-    vertical-align: top;
-    transition: box-shadow 0.2s;
-}
-
-.textinput:hover {
-    border: 1px solid #c6ffec;
-}
-
-input[type='text'] {
-    border: none;
     font-family: 'Neucha', cursive;
     font-size: 32px;
 }
 
-input[type='text']:active, :hover, :focus {
+.marker_text:active, :hover, :focus {
     outline: 0;
     outline-offset: 0;
 }
@@ -106,6 +102,9 @@ section {
     margin-top: 10px;
 }
 
+label {
+    display: block;
+}
 
 .tab {
     overflow: hidden;
@@ -130,7 +129,10 @@ section {
     background-color: #e3fff6;
 }
 .tab button.active {
-    background-color: #c6ffec;
+    background: rgb(198,255,236);
+    background: linear-gradient(180deg, rgba(198,255,236,1) 0%, rgba(227,255,246,1) 35%, rgba(241,255,250,1) 100%);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 .tabcontent {
     display: none;
@@ -192,4 +194,37 @@ td {
 
 tr:nth-child(even) td {
     background: #e3fff6;
+}
+
+.form {
+    text-align: center;
+    border: 3px solid #c6ffec;
+    border-radius: 50px;
+    width: max-content;
+    margin: auto;
+    background: #f1fffa;
+    padding: 0 30px;
+}
+
+.input_data {
+    border: 3px solid #c6ffec;
+    font-family: 'Neucha', cursive;
+    font-size: 32px;
+    border-radius: 50px;
+    padding: 15px 20px;
+    margin: 20px;
+    background: white;
+}
+
+#tab-auth {
+    width: 100%;
+    display: flex;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.link {
+    color: #b8eddb;
 }

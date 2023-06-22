@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class DtoUserCreate {
   @ApiProperty()
@@ -10,6 +10,6 @@ export class DtoUserCreate {
   @ApiProperty()
   password: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   isAdmin: boolean;
 }
