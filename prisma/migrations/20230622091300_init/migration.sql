@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -8,7 +8,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Station" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "markerName" TEXT NOT NULL,
     "markerPath" TEXT NOT NULL,
     "text" TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "Station" (
 
 -- CreateTable
 CREATE TABLE "Animation" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "coordinates" INTEGER[],
     "animation" TEXT NOT NULL,
 
@@ -27,12 +27,16 @@ CREATE TABLE "Animation" (
 
 -- CreateTable
 CREATE TABLE "Results" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "numberOfStations" INTEGER NOT NULL,
     "time" INTEGER NOT NULL,
 
     CONSTRAINT "Results_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Results_userId_key" ON "Results"("userId");
 
 -- AddForeignKey
 ALTER TABLE "Results" ADD CONSTRAINT "Results_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

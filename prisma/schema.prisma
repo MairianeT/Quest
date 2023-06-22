@@ -11,27 +11,28 @@ datasource db {
 }
 
 model User {
-  id      Int       @id @default(autoincrement())
+  id      String    @id @default(uuid()) @db.Uuid
   name    String
   Results Results[]
 }
 
 model Station {
-  id         Int    @id @default(autoincrement())
+  id         String @id @default(uuid()) @db.Uuid
   markerName String
   markerPath String
   text       String
 }
 
 model Animation {
-  id          Int    @id @default(autoincrement())
+  id          String @id @default(uuid()) @db.Uuid
   coordinates Int[]
   animation   String
 }
 
 model Results {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-  time   Int
+  id               String @id @default(uuid()) @db.Uuid
+  userId           String @unique @db.Uuid
+  user             User   @relation(fields: [userId], references: [id])
+  numberOfStations Int
+  time             Int
 }
