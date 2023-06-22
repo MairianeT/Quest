@@ -1,21 +1,28 @@
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AnimationService } from './animation.service';
 import { AnimationDto } from './dto.animation';
 import { Animation } from './animation.entity';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../auth/roles';
+import { AuthGuard } from '../auth/guard.service';
 
 @ApiTags('animations')
 @Controller('api/animations')
 export class AnimationController {
   constructor(private animationService: AnimationService) {}
   @Post()
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Roles(Role.Admin)
   @ApiCreatedResponse({
     description: 'The animation has been successfully added.',
   })
