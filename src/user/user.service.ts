@@ -1,23 +1,34 @@
-import { PrismaClient } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
+import { DtoUserCreate } from './dto.user.create';
+import * as bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable()
 export class UserService {
-  async create(name: string): Promise<User> {
+  async create(createUserDto: DtoUserCreate): Promise<User> {
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(createUserDto.password, salt);
     const user = await prisma.user.create({
       data: {
-        name: name,
+        name: createUserDto.name,
+        login: createUserDto.login,
+        password: password,
+        isAdmin: createUserDto.isAdmin || false,
       },
     });
-    await prisma.results.create({
-      data: {
-        userId: user.id,
-        numberOfStations: 0,
-        time: 0,
-      },
-    });
+
+    if (!createUserDto.isAdmin) {
+      await prisma.results.create({
+        data: {
+          userId: user.id,
+          numberOfStations: 0,
+          time: 0,
+        },
+      });
+    }
+
     return user;
   }
 
@@ -31,5 +42,24 @@ export class UserService {
     });
 
     return user;
+  }
+
+  async findOneByLogin(login: string) {
+    const findUser = await prisma.user.findFirst({
+      where: {
+        login: login,
+      },
+      select: {
+        id: true,
+        login: true,
+        password: true,
+      },
+    });
+
+    if (!findUser) {
+      return null;
+    }
+
+    return findUser;
   }
 }

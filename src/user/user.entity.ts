@@ -14,4 +14,13 @@ export class User {
     message: 'Name is too short',
   })
   name: string;
+
+  @ApiProperty()
+  login: string;
+
+  @ApiProperty()
+  password: string;
+
+  @ApiProperty()
+  isAdmin: boolean;
 }

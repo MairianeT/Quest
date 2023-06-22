@@ -12,6 +12,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
+
   hbs.registerPartials(join(__dirname, '..', 'views', 'partials'));
 
   const config = new DocumentBuilder()
@@ -19,6 +20,7 @@ async function bootstrap() {
     .setDescription('Quest by stations')
     .setVersion('1.0')
     .addTag('quest')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
