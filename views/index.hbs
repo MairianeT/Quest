@@ -8,17 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css" type="text/css">
 
-<!--Маркеры и отображение текста-->
-  <script src='/scripts/three.js'></script>
-  <script src="/scripts/jsartoolkit5/artoolkit.min.js"></script>
-  <script src="/scripts/jsartoolkit5/artoolkit.api.js"></script>
-  <script src="/scripts/threex/threex-artoolkitsource.js"></script>
-  <script src="/scripts/threex/threex-artoolkitcontext.js"></script>
-  <script src="/scripts/threex/threex-arbasecontrols.js"></script>
-  <script src="/scripts/threex/threex-armarkercontrols.js"></script>
-  <title>Квест по станциям</title>
-
-
   <meta charset="UTF-8">
   <meta name="keywords" content="квест, квест по станциям, ar">
 </head>
@@ -27,168 +16,141 @@
 
 
   <header class="header">
-    <h2>Квест по станциям</h2>
+    <h2><a href="/">Квест по станциям</a></h2>
   </header>
 
 
-<main id="main">
+<main id="main" style="margin: 60px auto">
 
-  <script>
+  <div class="tab"  id="tab-auth">
+    <button class="tablinks" onclick="openTab(event, 'sign-in')" id="defaultOpen">Вход</button>
+    <button class="tablinks" onclick="openTab(event, 'sign-up')">Регистрация</button>
+  </div>
+  <script type="text/javascript" src="/scripts/src/admin-tabs.js"></script>
 
-    var scene, camera, renderer, clock, deltaTime, totalTime;
+ <section id="sign-in" class="tabcontent">
+   <form method="post" class="form" id="loginForm">
+     <h2 style="text-align: center">Вход</h2>
+     <span style="display: block">
+      <input class="input_data" type="text" id="login-sign-in" name="text" placeholder="Логин">
+    </span>
+     <span style="display: block">
+      <input class="input_data" type="password" id="password-sign-in" name="password" placeholder="Пароль">
+    </span>
+     <button type="submit" class="btn1">Войти</button>
+   </form>
 
-    var arToolkitSource, arToolkitContext;
+   <script>
+     document.getElementById('loginForm').addEventListener('submit', function (event) {
+       event.preventDefault();
 
-    initialize();
-    animate();
+       const login = document.getElementById('login-sign-in').value;
+       const password = document.getElementById('password-sign-in').value;
 
-    function initialize()
-    {
-      scene = new THREE.Scene();
+       // Отправка данных аутентификации на сервер
+       fetch('/auth/login', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ login, password }),
+       })
+         .then((response) => response.json())
+         .then((data) => {
+           console.log(data)
+           if (data.access_token) {
+             localStorage.setItem('jwtToken', data.access_token);
+             localStorage.setItem('userId', data.id);
+             localStorage.setItem('isAdmin', data.isAdmin);
+             if (data.isAdmin) {
+               window.location.href = 'admin';
+             }
+             else {
+               window.location.href = 'ar-camera';
+             }
 
-      let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 );
-      scene.add( ambientLight );
+           } else {
+             alert('Ошибка входа в систему');
+           }
+         })
+         .catch((error) => {
+           console.error('Ошибка входа в систему:', error);
+         });
+     });
+   </script>
+ </section>
 
-      camera = new THREE.Camera();
-      scene.add(camera);
+  <section id="sign-up" class="tabcontent">
+    <form method="post" class="form" id="loginForm2">
+      <h2 style="text-align: center">Регистрация</h2>
+      <span style="display: block">
+      <input class="input_data" type="text" id="name-sign-up" name="text" placeholder="Имя">
+    </span>
+      <span style="display: block">
+      <input class="input_data" type="text" id="login-sign-up" name="text" placeholder="Логин">
+    </span>
+      <span style="display: block">
+      <input class="input_data" type="password" id="password-sign-up" name="password" placeholder="Пароль">
+    </span>
+      <button type="submit" class="btn1">Зарегистрироваться</button>
+    </form>
+    <script>
+      document.getElementById('loginForm2').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-      renderer = new THREE.WebGLRenderer({
-        antialias : true,
-        alpha: true
-      });
-      renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-      renderer.setSize( 640, 480 );
-      renderer.domElement.style.position = 'absolute'
-      renderer.domElement.style.top = '0px'
-      renderer.domElement.style.left = '0px'
-      document.getElementById('main').appendChild( renderer.domElement );
+        const name = document.getElementById('name-sign-up').value;
+        const login = document.getElementById('login-sign-up').value;
+        const password = document.getElementById('password-sign-up').value;
 
-      clock = new THREE.Clock();
-      deltaTime = 0;
-      totalTime = 0;
-
-      ////////////////////////////////////////////////////////////
-      // setup arToolkitSource
-      ////////////////////////////////////////////////////////////
-
-      arToolkitSource = new THREEx.ArToolkitSource({
-        sourceType : 'webcam',
-      });
-
-      function onResize()
-      {
-        arToolkitSource.onResize()
-        arToolkitSource.copySizeTo(renderer.domElement)
-        if ( arToolkitContext.arController !== null )
-        {
-          arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
-        }
-      }
-
-      arToolkitSource.init(function onReady(){
-        onResize()
-      });
-
-      // handle resize event
-      window.addEventListener('resize', function(){
-        onResize()
-      });
-
-      ////////////////////////////////////////////////////////////
-      // setup arToolkitContext
-      ////////////////////////////////////////////////////////////
-
-      // create atToolkitContext
-      arToolkitContext = new THREEx.ArToolkitContext({
-        cameraParametersUrl: 'data/camera_para.dat',
-        detectionMode: 'mono'
-      });
-
-      // copy projection matrix to camera when initialization complete
-      arToolkitContext.init( function onCompleted(){
-        camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-      });
-
-      ////////////////////////////////////////////////////////////
-      // setup markerRoots
-      ////////////////////////////////////////////////////////////
-
-      // build markerControls
-      const loader = new THREE.FontLoader()
-      let texts = ["Идите к B", "Идите к С", "Победа!"]
-      let patts = ["data/letterA.patt", "data/letterB.patt", "data/letterC.patt"]
-      // build markerControls
-      for (let i = 0; i < 3; i++)
-      {
-        let markerRoot1 = new THREE.Group();
-        scene.add(markerRoot1);
-        let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-          type: 'pattern', patternUrl: patts[i],
+        // Отправка данных аутентификации на сервер
+        fetch('/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, login, password }),
+        }).then((response) => response.json()).then((data) => {
+          console.log(data);}).then(() =>
+        fetch('/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ login, password }),
         })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            if (data.access_token) {
+              localStorage.setItem('jwtToken', data.access_token);
+              localStorage.setItem('userId', data.id);
+              localStorage.setItem('isAdmin', data.isAdmin);
+              if (data.isAdmin) {
+                window.location.href = 'admin';
+              }
+              else {
+                window.location.href = 'ar-camera';
+              }
 
-
-        loader.load('font/Neucha_Regular.json', function (font) {
-          const geometry = new THREE.TextGeometry(texts[i], {
-            font: font,
-            size: 0.2,
-            height: 0.05,
-            curveSegments: 12,
-            bevelEnabled: false,
-            bevelThickness: 0,
-            bevelSize: 0,
-            bevelOffset: 0,
-            bevelSegments: 3,
+            } else {
+              alert('Ошибка входа в систему');
+            }
           })
-          const material = new THREE.MeshFaceMaterial([
-            new THREE.MeshPhongMaterial({
-              color: 0x000000
-            }),
-            new THREE.MeshPhongMaterial({
-              color: 0xffffff
-            }),
-          ])
+          .catch((error) => {
+            console.error('Ошибка входа в систему:', error);
+          }));
+      });
+    </script>
+  </section>
 
-          const mesh = new THREE.Mesh(geometry, material)
-          mesh.name = 'text'
-          mesh.rotation.x = -Math.PI/2;
-          mesh.position.x -= 0.3;
-          mesh.position.y += 0.02;
-          markerRoot1.add(mesh)
-        })
-      }
-    }
-
-
-
-
-    function update()
-    {
-      if ( arToolkitSource.ready !== false )
-        arToolkitContext.update( arToolkitSource.domElement );
-    }
-
-
-    function render()
-    {
-      renderer.render( scene, camera );
-    }
-
-
-    function animate()
-    {
-      requestAnimationFrame(animate);
-      deltaTime = clock.getDelta();
-      totalTime += deltaTime;
-      update();
-      render();
-    }
-
-  </script>
 </main>
 
 
 <footer class="footer">
 
 </footer>
+  <script>
+    document.getElementById("defaultOpen").click();
+  </script>
 </body>
 </html>

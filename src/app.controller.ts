@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, UseGuards } from '@nestjs/common';
 
 @Controller()
 export class AppController {
@@ -17,6 +17,12 @@ export class AppController {
   @Get('/geo')
   @Render('geo')
   getGeoPage() {
+    return { title: 'Квест по станциям' };
+  }
+
+  @Get('/ar-camera')
+  @Render('ar-camera')
+  getCameraPage() {
     return { title: 'Квест по станциям' };
   }
 }

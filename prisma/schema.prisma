@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String
+  Results  Results[]
+  login    String
+  password String
+  isAdmin  Boolean
+}
+
+model Station {
+  id         String @id @default(uuid()) @db.Uuid
+  markerName String
+  markerPath String
+  text       String
+}
+
+model Animation {
+  id          String @id @default(uuid()) @db.Uuid
+  coordinates Int[]
+  animation   String
+}
+
+model Results {
+  id               String @id @default(uuid()) @db.Uuid
+  userId           String @unique @db.Uuid
+  user             User   @relation(fields: [userId], references: [id])
+  numberOfStations Int
+  time             Int
+}
