@@ -1,16 +1,26 @@
 import { PrismaClient } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UploadedFile } from '@nestjs/common';
 import { Station } from './station.entity';
 import { StationDto } from './dto.station';
+import { createWriteStream, unlink } from 'fs';
+import { promisify } from 'util';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class StationService {
   async create(stationDto: StationDto): Promise<Station> {
-    return prisma.station.create({
-      data: stationDto,
+    const existingStation = await prisma.station.findFirst({
+      where: {
+        markerName: stationDto.markerName,
+      },
     });
+
+    if (!existingStation) {
+      return prisma.station.create({
+        data: stationDto,
+      });
+    } else return null;
   }
 
   async getAll(): Promise<Station[]> {
@@ -30,5 +40,37 @@ export class StationService {
         text: text,
       },
     });
+  }
+
+  async uploadFile(@UploadedFile() file: any): Promise<string> {
+    const filePath = `./public/data/${file.originalname}`;
+    const res = `/data/${file.originalname}`;
+    const writeStream = createWriteStream(filePath);
+    writeStream.write(file.buffer);
+    writeStream.end();
+
+    return res;
+  }
+
+  async delete(id: string) {
+    const station = await prisma.station.findUniqueOrThrow({
+      where: { id: id },
+      select: { markerPath: true },
+    });
+
+    const filePath = `./public${station.markerPath}`;
+
+    const unlinkAsync = promisify(unlink);
+
+    try {
+      // Удаление файла с сервера
+      await unlinkAsync(filePath);
+
+      await prisma.station.delete({ where: { id } });
+      return;
+    } catch (error) {
+      console.error('Ошибка при удалении файла:', error);
+      throw error;
+    }
   }
 }
