@@ -60,7 +60,7 @@
 
 
 <footer class="footer">
-  <button class="btn1" onclick="Start()">Прохождение</button>
+  <button class="btn1" id="buttonLabel" onclick="isAdmin === 'true' ? StartAdmin() : Start()"></button>
   <script>
     function Start() {
       if (!localStorage.getItem('startTime')) {
@@ -70,6 +70,12 @@
       }
       window.location.href = '/ar-camera'
     }
+    function StartAdmin() {
+      window.location.href = '/admin'
+    }
+    var isAdmin = localStorage.getItem('isAdmin');
+    var buttonLabel = isAdmin === 'true' ? 'Администрирование' : 'Прохождение';
+    document.getElementById('buttonLabel').innerText = buttonLabel;
   </script>
 </footer>
 </body>
