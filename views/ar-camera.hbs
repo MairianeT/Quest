@@ -210,6 +210,20 @@
 
     function animate()
     {
+      var video = document.querySelector("video");
+      if (video) {
+        video.style.width = "100%";
+        video.style.removeProperty('height');
+        video.style.marginTop = '0';
+
+      }
+      var canvas = document.querySelector("canvas");
+      if (canvas) {
+        canvas.style.width = '100%';
+        canvas.style.marginLeft = '0';
+        canvas.style.height = '1000px'
+        canvas.style.marginTop = '100px';
+      }
       requestAnimationFrame(animate);
       deltaTime = clock.getDelta();
       totalTime += deltaTime;
