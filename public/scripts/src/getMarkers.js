@@ -43,14 +43,16 @@ const loadMarkers = async () => {
     button.addEventListener('click', () => {
       const row = button.closest('tr');
       const userInput = prompt('Введите текст:');
-      const dataId = row.getAttribute('data-id');
-      fetch(`/api/stations/${dataId}?text=${userInput}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      }).then(() => loadMarkers());
+      if (userInput) {
+        const dataId = row.getAttribute('data-id');
+        fetch(`/api/stations/${dataId}?text=${userInput}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }).then(() => loadMarkers());
+      }
     });
   });
 };

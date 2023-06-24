@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { Results } from './results.entity';
+import { DtoResults } from "./dto.results";
 
 const prisma = new PrismaClient();
 
@@ -16,15 +17,12 @@ export class ResultsService {
     });
   }
 
-  async update(id: string, time: number): Promise<Results> {
-    const oldRes = await prisma.results.findUniqueOrThrow({
-      where: { userId: id },
-    });
+  async update(id: string, resDto: DtoResults): Promise<Results> {
     return prisma.results.update({
       where: { userId: id },
       data: {
-        numberOfStations: oldRes.numberOfStations + 1,
-        time: oldRes.time + time,
+        numberOfStations: resDto.numberOfStations,
+        time: resDto.time,
       },
     });
   }

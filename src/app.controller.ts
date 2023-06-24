@@ -25,4 +25,15 @@ export class AppController {
   getCameraPage() {
     return { title: 'Квест по станциям' };
   }
+  @Get('/start')
+  @Render('start')
+  getStartPage() {
+    return { title: 'Квест по станциям' };
+  }
+
+  @Get('/results')
+  @Render('results')
+  getResultsPage() {
+    return { title: 'Квест по станциям' };
+  }
 }

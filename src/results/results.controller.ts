@@ -5,10 +5,11 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Controller, Get, Param, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Query, UseGuards } from "@nestjs/common";
 import { Results } from './results.entity';
 import { ResultsService } from './results.service';
 import { AuthGuard } from '../auth/guard.service';
+import { DtoResults } from "./dto.results";
 
 @ApiTags('results')
 @Controller('api/results')
@@ -42,7 +43,7 @@ export class ResultsController {
   @Put(':userId')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  async addVolunteers(@Param('userId') id: string, @Query() time: number) {
-    return this.resultsService.update(id, time);
+  async GetResByUserId(@Param('userId') id: string, @Body() resDto: DtoResults) {
+    return this.resultsService.update(id, resDto);
   }
 }
