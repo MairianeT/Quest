@@ -1,4 +1,5 @@
 const jwtToken = localStorage.getItem('jwtToken');
+const user = localStorage.getItem('userId');
 const getResults = async () => {
   return await fetch('/api/results', {
     method: 'GET',
@@ -32,6 +33,16 @@ const loadResults = async () => {
     const resRow = res.querySelector('.result_line');
     resRow.dataset.id = item.id;
     var td = res.querySelectorAll('td');
+    if (user === item.userId) {
+      td[0].style.borderTop = '2px solid #737373';
+      td[0].style.borderBottom = '2px solid #737373';
+      td[0].style.borderLeft = '2px solid #737373';
+      td[1].style.borderTop = '2px solid #737373';
+      td[1].style.borderBottom = '2px solid #737373';
+      td[2].style.borderTop = '2px solid #737373';
+      td[2].style.borderBottom = '2px solid #737373';
+      td[2].style.borderRight = '2px solid #737373';
+    }
     td[0].textContent = await GetNameById(item.userId);
     td[1].textContent = item.numberOfStations;
     td[2].textContent = item.time;
