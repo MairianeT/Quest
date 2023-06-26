@@ -22,4 +22,15 @@ export class AnimationService {
       where: { id: id },
     });
   }
+
+  async delete(id: string) {
+    return prisma.animation.delete({ where: { id } });
+  }
+
+  async update(id: string, latitude: number, longitude: number) {
+    return prisma.animation.update({
+      where: { id },
+      data: { latitude, longitude },
+    });
+  }
 }

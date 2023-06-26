@@ -70,6 +70,14 @@ export class StationController {
     return this.stationService.update(id, text);
   }
 
+  @Post('results')
+  async uploadResult(
+    @Query('name') name: string,
+    @Query('station') station: string,
+  ) {
+    return await this.stationService.logResult(name, station);
+  }
+
   @Post('upload')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()

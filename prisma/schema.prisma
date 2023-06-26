@@ -27,9 +27,10 @@ model Station {
 }
 
 model Animation {
-  id          String @id @default(uuid()) @db.Uuid
-  coordinates Int[]
-  animation   String
+  id        String @id @default(uuid()) @db.Uuid
+  animation String
+  latitude  Float
+  longitude Float
 }
 
 model Results {

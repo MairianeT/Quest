@@ -16,6 +16,8 @@
   <script src="/scripts/threex/threex-artoolkitcontext.js"></script>
   <script src="/scripts/threex/threex-arbasecontrols.js"></script>
   <script src="/scripts/threex/threex-armarkercontrols.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer"></script>
+
   <title>Квест по станциям</title>
 
 
@@ -40,6 +42,30 @@
 
 
 <main id="main">
+  <script>
+    let latitudes;
+    let longitudes;
+    let animIds;
+    fetch('/api/animations').then((response) => response.json()).then((data) => {
+      animIds = data.map((item) => item.animation);
+      latitudes = data.map((item) => item.latitude);
+      longitudes = data.map((item) => item.longitude);
+
+      const modelViewerContainer = document.getElementById('modelViewerContainer');
+
+      animIds.forEach(animId => {
+        const modelViewer = document.createElement('model-viewer');
+        modelViewer.setAttribute('class', 'modelViewer');
+        modelViewer.setAttribute('data-id', animId);
+        modelViewer.setAttribute('src', `https://drive.google.com/uc?export=download&id=${animId}`);
+        modelViewer.setAttribute('camera-controls', '');
+        modelViewer.setAttribute('style', 'z-index: 9999; position: absolute; height: 800px; width: 100%; margin: auto; display: none; justify-content: center')
+        modelViewerContainer.appendChild(modelViewer);
+    });
+    });
+  </script>
+  <div style="display: flex; position: relative" id="modelViewerContainer">
+  </div>
 
   <script>
 
@@ -115,7 +141,7 @@
       });
 
       // copy projection matrix to camera when initialization complete
-      arToolkitContext.init( function onCompleted(){
+      arToolkitContext.init(function onCompleted(){
         camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
       });
 
@@ -125,7 +151,6 @@
 
       // build markerControls
       const loader = new THREE.FontLoader()
-
 
       fetch('/api/stations').then((response) => response.json()).then((data) => {
         const texts = data.map((item) => item.text);
@@ -154,6 +179,9 @@
               const url = `/api/results/${userId}`;
               const jwtToken = localStorage.getItem('jwtToken');
               const numberOfStations = markerTextMap.size;
+              fetch(`/api/stations/results?name=${UserName}&station=${patts[i]}`, {
+                method: 'POST',
+              })
               fetch(url, {
                 method: 'PUT',
                 headers: {
@@ -178,7 +206,7 @@
                 width: 2,
               });
               const material = new THREE.MeshPhongMaterial({
-                color: 0x737373,
+                color: 0xeeeeee,
               });
 
               const mesh = new THREE.Mesh(geometry, material);
@@ -224,6 +252,34 @@
         canvas.style.height = '1000px'
         canvas.style.marginTop = '100px';
       }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const currentLatitude = position.coords.latitude;
+        const currentLongitude = position.coords.longitude;
+        console.log(currentLatitude, currentLongitude);
+        document.getElementById('coor').textContent = currentLatitude + ' ' + currentLongitude;
+
+        for (let i = 0; i < latitudes.length; i++) {
+          const latitude = latitudes[i];
+          const longitude = longitudes[i];
+          const animId = animIds[i];
+
+          if (Math.abs(currentLatitude - latitude) <= 0.0001 && Math.abs(currentLongitude - longitude) <= 0.0001) {
+            const modelViewer = document.querySelector(`model-viewer[data-id="${animId}"]`);
+
+            if (modelViewer) {
+              modelViewer.style.display = 'flex';
+            }
+          } else {
+            const modelViewer = document.querySelector(`model-viewer[data-id="${animId}"]`);
+
+            if (modelViewer) {
+              modelViewer.style.display = 'none';
+            }
+          }
+        }
+      });
+
       requestAnimationFrame(animate);
       deltaTime = clock.getDelta();
       totalTime += deltaTime;
@@ -237,6 +293,7 @@
 
 <footer class="footer">
   <button class="btn1" onclick="window.location.href = '/results'">Результаты</button>
+  <p id="coor"></p>
 </footer>
 <script>
   function getTimeDifferenceInSeconds(time1, time2) {

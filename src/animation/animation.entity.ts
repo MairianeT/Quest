@@ -6,7 +6,10 @@ export class Animation {
   id: string;
 
   @ApiProperty()
-  coordinates: number[];
+  latitude: number;
+
+  @ApiProperty()
+  longitude: number;
 
   @ApiProperty()
   animation: string;

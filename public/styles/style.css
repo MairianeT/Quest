@@ -228,3 +228,28 @@ tr:nth-child(even) td {
 .link {
     color: #b8eddb;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #f1fffa;
+    margin: 10% auto;
+    padding: 20px;
+    border: 3px solid #c6ffec;
+    border-radius: 50px;
+    width: max-content;
+}
+
+#modelViewerContainer {
+    position: relative;
+}
