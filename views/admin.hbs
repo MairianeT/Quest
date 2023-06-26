@@ -73,10 +73,10 @@
             <td class="marker-patt"></td>
             <td class="marker-text"></td>
             <td>
-              <button id="edit-station">
+              <button id="edit-station" style="border: none; background: none">
                 <svg style="margin-right:30%; margin-left: 10%" fill="#000000" width="25px" height="25px" viewBox="0 0 0.75 0.75" xmlns="http://www.w3.org/2000/svg"><path d="M0.656 0.375a0.031 0.031 0 0 0 -0.031 0.031v0.188a0.031 0.031 0 0 1 -0.031 0.031H0.156a0.031 0.031 0 0 1 -0.031 -0.031V0.156a0.031 0.031 0 0 1 0.031 -0.031h0.188a0.031 0.031 0 0 0 0 -0.063H0.156a0.094 0.094 0 0 0 -0.094 0.094v0.438a0.094 0.094 0 0 0 0.094 0.094h0.438a0.094 0.094 0 0 0 0.094 -0.094v-0.188a0.031 0.031 0 0 0 -0.031 -0.031Zm-0.469 0.024V0.531a0.031 0.031 0 0 0 0.031 0.031h0.133a0.031 0.031 0 0 0 0.022 -0.009l0.216 -0.217L0.678 0.25a0.031 0.031 0 0 0 0 -0.044l-0.133 -0.134a0.031 0.031 0 0 0 -0.044 0l-0.088 0.088 -0.217 0.217a0.031 0.031 0 0 0 -0.009 0.022Zm0.336 -0.261 0.088 0.088 -0.044 0.044 -0.088 -0.088ZM0.25 0.412l0.185 -0.185 0.088 0.088L0.338 0.5H0.25Z"/></svg>
               </button>
-              <button id="delete-station">
+              <button id="delete-station" style="border: none; background: none">
                 <svg width="25px" height="25px" viewBox="0 0 0.625 0.625" xmlns="http://www.w3.org/2000/svg"><path fill="#000" d="M0.285 0h0.062a0.107 0.107 0 0 1 0.063 0.034 0.09 0.09 0 0 1 0.022 0.054h0.172C0.615 0.087 0.625 0.098 0.625 0.109a0.022 0.022 0 0 1 -0.022 0.022H0.546v0.363c0 0.08 -0.03 0.13 -0.095 0.13H0.169C0.103 0.623 0.073 0.573 0.073 0.494V0.132H0.022A0.022 0.022 0 0 1 0 0.11C0 0.098 0.01 0.088 0.022 0.088h0.172c0 -0.016 0.006 -0.033 0.018 -0.048C0.226 0.015 0.251 0.003 0.285 0Zm0.218 0.132H0.117v0.363c0 0.059 0.016 0.087 0.051 0.087H0.45C0.485 0.583 0.503 0.553 0.503 0.495V0.132Zm-0.292 0.067c0.011 0 0.022 0.01 0.022 0.022v0.251a0.022 0.022 0 0 1 -0.022 0.022 0.022 0.022 0 0 1 -0.022 -0.022V0.22c0 -0.013 0.01 -0.022 0.022 -0.022Zm0.085 0C0.307 0.198 0.317 0.208 0.317 0.22v0.251a0.022 0.022 0 0 1 -0.022 0.022 0.022 0.022 0 0 1 -0.022 -0.022V0.22C0.273 0.208 0.283 0.198 0.295 0.198Zm0.085 0c0.011 0 0.022 0.01 0.022 0.022v0.251a0.022 0.022 0 0 1 -0.022 0.022A0.022 0.022 0 0 1 0.358 0.471V0.22C0.358 0.208 0.368 0.198 0.38 0.198ZM0.287 0.044C0.267 0.045 0.253 0.053 0.245 0.065a0.06 0.06 0 0 0 -0.01 0.023h0.153a0.035 0.035 0 0 0 -0.011 -0.025 0.05 0.05 0 0 0 -0.033 -0.019H0.287Z"/></svg>
               </button>
               </td>
@@ -88,7 +88,65 @@
 
   <section id="animations" class="tabcontent">
     <article>
-      <h3>Добавить анимацию</h3>
+      <form method="post" class="form" id="newAnim" style="max-width: 70%">
+        <h3>Добавить анимацию</h3>
+        <p class="file-requirements" >Файл маркера должен быть формата .gltf <br> Файл должен быть загружен на Google Диск. В ячейку id вставляется id файла на Google Диске</p>
+        <input class="marker_text" id="animation" style="display: block; margin: auto" type='text' placeholder="Введите id файла" required>
+        <input class="marker_text" id="latitude" style="display: block; margin: 15px auto" type='text' placeholder="Широта" required>
+        <input class="marker_text" id="longitude" style="display: block; margin: auto" type='text' placeholder="Долгота" required>
+
+        <button type="submit" class="btn1" id="animbtn">Добавить</button>
+      </form>
+    </article>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <h2>Новые координаты</h2>
+        <input class="marker_text" id="input1" style="display: block; margin: 15px auto" type='text' placeholder="Новая широта">
+        <input class="marker_text" id="input2" style="display: block; margin: auto" type='text' placeholder="Новая долгота">
+        <button class="btn1" id="editAnimSubmit">Изменить</button>
+        <button class="btn1" onclick="document.getElementById('myModal').style.display = 'none'">Закрыть</button>
+      </div>
+    </div>
+    <article class="animations-list">
+      <h3>Анимации квеста</h3>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Анимация</th>
+          <th>Координаты</th>
+          <th>Изменить</th>
+        </tr>
+        </thead>
+        <tbody  id="anims">
+        <template id="anim">
+          <tr class="anim_line">
+            <td><a target="_blank" style="margin: auto"><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg></a></td>
+            <td></td>
+            <td>
+              <button id="edit-anim" style="border: none; background: none">
+                <svg style="margin-right:30%; margin-left: 10%" fill="#000000" width="25px" height="25px" viewBox="0 0 0.75 0.75" xmlns="http://www.w3.org/2000/svg"><path d="M0.656 0.375a0.031 0.031 0 0 0 -0.031 0.031v0.188a0.031 0.031 0 0 1 -0.031 0.031H0.156a0.031 0.031 0 0 1 -0.031 -0.031V0.156a0.031 0.031 0 0 1 0.031 -0.031h0.188a0.031 0.031 0 0 0 0 -0.063H0.156a0.094 0.094 0 0 0 -0.094 0.094v0.438a0.094 0.094 0 0 0 0.094 0.094h0.438a0.094 0.094 0 0 0 0.094 -0.094v-0.188a0.031 0.031 0 0 0 -0.031 -0.031Zm-0.469 0.024V0.531a0.031 0.031 0 0 0 0.031 0.031h0.133a0.031 0.031 0 0 0 0.022 -0.009l0.216 -0.217L0.678 0.25a0.031 0.031 0 0 0 0 -0.044l-0.133 -0.134a0.031 0.031 0 0 0 -0.044 0l-0.088 0.088 -0.217 0.217a0.031 0.031 0 0 0 -0.009 0.022Zm0.336 -0.261 0.088 0.088 -0.044 0.044 -0.088 -0.088ZM0.25 0.412l0.185 -0.185 0.088 0.088L0.338 0.5H0.25Z"/></svg>
+              </button>
+              <button id="delete-anim" style="border: none; background: none">
+                <svg width="25px" height="25px" viewBox="0 0 0.625 0.625" xmlns="http://www.w3.org/2000/svg"><path fill="#000" d="M0.285 0h0.062a0.107 0.107 0 0 1 0.063 0.034 0.09 0.09 0 0 1 0.022 0.054h0.172C0.615 0.087 0.625 0.098 0.625 0.109a0.022 0.022 0 0 1 -0.022 0.022H0.546v0.363c0 0.08 -0.03 0.13 -0.095 0.13H0.169C0.103 0.623 0.073 0.573 0.073 0.494V0.132H0.022A0.022 0.022 0 0 1 0 0.11C0 0.098 0.01 0.088 0.022 0.088h0.172c0 -0.016 0.006 -0.033 0.018 -0.048C0.226 0.015 0.251 0.003 0.285 0Zm0.218 0.132H0.117v0.363c0 0.059 0.016 0.087 0.051 0.087H0.45C0.485 0.583 0.503 0.553 0.503 0.495V0.132Zm-0.292 0.067c0.011 0 0.022 0.01 0.022 0.022v0.251a0.022 0.022 0 0 1 -0.022 0.022 0.022 0.022 0 0 1 -0.022 -0.022V0.22c0 -0.013 0.01 -0.022 0.022 -0.022Zm0.085 0C0.307 0.198 0.317 0.208 0.317 0.22v0.251a0.022 0.022 0 0 1 -0.022 0.022 0.022 0.022 0 0 1 -0.022 -0.022V0.22C0.273 0.208 0.283 0.198 0.295 0.198Zm0.085 0c0.011 0 0.022 0.01 0.022 0.022v0.251a0.022 0.022 0 0 1 -0.022 0.022A0.022 0.022 0 0 1 0.358 0.471V0.22C0.358 0.208 0.368 0.198 0.38 0.198ZM0.287 0.044C0.267 0.045 0.253 0.053 0.245 0.065a0.06 0.06 0 0 0 -0.01 0.023h0.153a0.035 0.035 0 0 0 -0.011 -0.025 0.05 0.05 0 0 0 -0.033 -0.019H0.287Z"/></svg>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </table>
     </article>
   </section>
 </main>
@@ -98,6 +156,7 @@
   document.getElementById("defaultOpen").click();
 </script>
 <script src="scripts/src/getMarkers.js"></script>
+<script type="module" src="scripts/src/loadAnim.js"></script>
 <footer class="footer">
   <button class="btn1" onclick="window.location.href = '/results'">Результаты</button>
 </footer>

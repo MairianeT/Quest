@@ -2,7 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AnimationDto {
   @ApiProperty()
-  coordinates: number[];
+  latitude: number;
+
+  @ApiProperty()
+  longitude: number;
 
   @ApiProperty()
   animation: string;

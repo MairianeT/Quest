@@ -7,7 +7,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { AnimationService } from './animation.service';
 import { AnimationDto } from './dto.animation';
 import { Animation } from './animation.entity';
@@ -22,7 +22,6 @@ export class AnimationController {
   @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @Roles(Role.Admin)
   @ApiCreatedResponse({
     description: 'The animation has been successfully added.',
   })
@@ -52,5 +51,23 @@ export class AnimationController {
   })
   async find(@Param('id') id: string): Promise<Animation> {
     return this.animationService.getBuId(id);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async Update(@Param('id') id: string, @Query('latitude') latitude: string ,@Query('longitude') longitude: string) {
+    const parsedLatitude = parseFloat(latitude);
+    const parsedLongitude = parseFloat(longitude);
+    return this.animationService.update(id, parsedLatitude, parsedLongitude);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async delete(@Param('id') id: string) {
+    return this.animationService.delete(id);
   }
 }
