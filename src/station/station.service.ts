@@ -4,6 +4,7 @@ import { Station } from './station.entity';
 import { StationDto } from './dto.station';
 import { createWriteStream, unlink } from 'fs';
 import { promisify } from 'util';
+import * as fs from 'fs';
 
 const prisma = new PrismaClient();
 
@@ -72,5 +73,19 @@ export class StationService {
       console.error('Ошибка при удалении файла:', error);
       throw error;
     }
+  }
+
+  async logResult(name: string, station: string) {
+    const date = new Date();
+    const time = date.toLocaleTimeString();
+
+    const data = `${name}, ${station}, ${time}\n`;
+    fs.appendFile('public/data/results.txt', data, (err) => {
+      if (err) {
+        console.error('Error writing to file:', err);
+      } else {
+        console.log('Data has been written to file.');
+      }
+    });
   }
 }
