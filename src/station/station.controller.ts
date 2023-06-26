@@ -10,19 +10,21 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { StationService } from './station.service';
 import { Station } from './station.entity';
 import { StationDto } from './dto.station';
-import { Roles } from '../auth/roles.decorator';
-import { Role } from '../auth/roles';
 import { AuthGuard } from '../auth/guard.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('stations')
 @Controller('api/stations')
@@ -31,7 +33,6 @@ export class StationController {
   @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @Roles(Role.Admin)
   @ApiCreatedResponse({
     description: 'The station has been successfully added.',
   })
@@ -63,8 +64,24 @@ export class StationController {
   }
 
   @Put(':id')
-  @Roles(Role.Admin)
-  async addVolunteers(@Param('userId') id: string, @Query() text: string) {
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async Update(@Param('id') id: string, @Query('text') text: string) {
     return this.stationService.update(id, text);
+  }
+
+  @Post('upload')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: any): Promise<string> {
+    return await this.stationService.uploadFile(file);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async delete(@Param('id') id: string) {
+    return this.stationService.delete(id);
   }
 }

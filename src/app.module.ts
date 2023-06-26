@@ -6,6 +6,7 @@ import { StationModule } from './station/station.module';
 import { AnimationModule } from './animation/animation.module';
 import { ResultsModule } from './results/results.module';
 import { AuthModule } from './auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -14,6 +15,9 @@ import { AuthModule } from './auth/auth.module';
     AnimationModule,
     ResultsModule,
     AuthModule,
+    MulterModule.register({
+      dest: '/data',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

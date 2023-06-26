@@ -60,6 +60,8 @@
       camera = new THREE.Camera();
       scene.add(camera);
 
+      const videoElement = document.createElement("video");
+      videoElement.style.width = '100%';
       renderer = new THREE.WebGLRenderer({
         antialias : true,
         alpha: true
@@ -123,50 +125,74 @@
 
       // build markerControls
       const loader = new THREE.FontLoader()
-      let texts = ["Идите к B", "Идите к С", "Победа!"]
-      let patts = ["data/letterA.patt", "data/letterB.patt", "data/letterC.patt"]
-      // build markerControls
-      for (let i = 0; i < 3; i++)
-      {
-        let markerRoot1 = new THREE.Group();
-        scene.add(markerRoot1);
-        let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-          type: 'pattern', patternUrl: patts[i],
-        })
 
 
-        loader.load('font/Neucha_Regular.json', function (font) {
-          const geometry = new THREE.TextGeometry(texts[i], {
-            font: font,
-            size: 0.2,
-            height: 0.05,
-            curveSegments: 12,
-            bevelEnabled: false,
-            bevelThickness: 0,
-            bevelSize: 0,
-            bevelOffset: 0,
-            bevelSegments: 3,
-          })
-          const material = new THREE.MeshFaceMaterial([
-            new THREE.MeshPhongMaterial({
-              color: 0x000000
-            }),
-            new THREE.MeshPhongMaterial({
-              color: 0xffffff
-            }),
-          ])
+      fetch('/api/stations').then((response) => response.json()).then((data) => {
+        const texts = data.map((item) => item.text);
+        const patts = data.map((item) => item.markerPath);
+        const markerMap = localStorage.getItem('myMap');
 
-          const mesh = new THREE.Mesh(geometry, material)
-          mesh.name = 'text'
-          mesh.rotation.x = -Math.PI/2;
-          mesh.position.x -= 0.3;
-          mesh.position.y += 0.02;
-          markerRoot1.add(mesh)
-        })
-      }
+        const markerTextMap = new Map(JSON.parse(markerMap));
+
+        for (let i = 0; i < texts.length; i++) {
+          let markerRoot1 = new THREE.Group();
+          scene.add(markerRoot1);
+          let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+            type: 'pattern',
+            patternUrl: patts[i],
+          });
+
+          markerControls1.addEventListener('markerFound', function () {
+            if (!markerTextMap.get(patts[i]))
+            {
+              markerTextMap.set(patts[i], true);
+              const now = new Date();
+              const currentTime = now.toLocaleTimeString();
+              const startTime = localStorage.getItem('startTime');
+              const time = getTimeDifferenceInSeconds(currentTime, startTime);
+              const userId = localStorage.getItem('userId');
+              const url = `/api/results/${userId}`;
+              const jwtToken = localStorage.getItem('jwtToken');
+              const numberOfStations = markerTextMap.size;
+              fetch(url, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+                body: JSON.stringify({ numberOfStations, time })
+              })
+              localStorage.setItem('myMap', JSON.stringify(Array.from(markerTextMap.entries())));
+            }
+            loader.load('font/Neucha_Regular.json', function (font) {
+              const geometry = new THREE.TextGeometry(texts[i], {
+                font: font,
+                size: 0.2,
+                height: 0.05,
+                curveSegments: 12,
+                bevelEnabled: false,
+                bevelThickness: 0,
+                bevelSize: 0,
+                bevelOffset: 0,
+                bevelSegments: 3,
+                width: 2,
+              });
+              const material = new THREE.MeshPhongMaterial({
+                color: 0x737373,
+              });
+
+              const mesh = new THREE.Mesh(geometry, material);
+              mesh.name = 'text';
+              mesh.rotation.x = -Math.PI / 2;
+              mesh.position.x -= 0.7;
+              mesh.position.y += 0.02;
+              mesh.position.z -= 0.3;
+              markerRoot1.add(mesh);
+            });
+          });
+        }
+      });
     }
-
-
 
 
     function update()
@@ -184,6 +210,20 @@
 
     function animate()
     {
+      var video = document.querySelector("video");
+      if (video) {
+        video.style.width = "100%";
+        video.style.removeProperty('height');
+        video.style.marginTop = '0';
+
+      }
+      var canvas = document.querySelector("canvas");
+      if (canvas) {
+        canvas.style.width = '100%';
+        canvas.style.marginLeft = '0';
+        canvas.style.height = '1000px'
+        canvas.style.marginTop = '100px';
+      }
       requestAnimationFrame(animate);
       deltaTime = clock.getDelta();
       totalTime += deltaTime;
@@ -196,7 +236,15 @@
 
 
 <footer class="footer">
-
+  <button class="btn1" onclick="window.location.href = '/results'">Результаты</button>
 </footer>
+<script>
+  function getTimeDifferenceInSeconds(time1, time2) {
+    const date1 = new Date(`2000-01-01T${time1}`);
+    const date2 = new Date(`2000-01-01T${time2}`);
+    const difference = Math.abs(date1 - date2);
+    return difference / 1000;
+  }
+</script>
 </body>
 </html>

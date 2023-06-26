@@ -22,6 +22,11 @@
 
 <main id="main" style="margin: 60px auto">
 
+  <script>
+    if (localStorage.getItem('jwtToken')) {
+      localStorage.getItem('isAdmin') === 'true' ? window.location.href = '/admin' : window.location.href = '/start'
+    }
+  </script>
   <div class="tab"  id="tab-auth">
     <button class="tablinks" onclick="openTab(event, 'sign-in')" id="defaultOpen">Вход</button>
     <button class="tablinks" onclick="openTab(event, 'sign-up')">Регистрация</button>
@@ -66,7 +71,9 @@
                window.location.href = 'admin';
              }
              else {
-               window.location.href = 'ar-camera';
+               const myMap = new Map();
+               localStorage.setItem('myMap', JSON.stringify(Array.from(myMap.entries())))
+               window.location.href = '/start';
              }
 
            } else {
@@ -109,8 +116,7 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ name, login, password }),
-        }).then((response) => response.json()).then((data) => {
-          console.log(data);}).then(() =>
+        }).then((response) => response.json()).then((data) =>
         fetch('/auth/login', {
           method: 'POST',
           headers: {
@@ -120,7 +126,6 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
             if (data.access_token) {
               localStorage.setItem('jwtToken', data.access_token);
               localStorage.setItem('userId', data.id);
@@ -129,11 +134,13 @@
                 window.location.href = 'admin';
               }
               else {
-                window.location.href = 'ar-camera';
+                const myMap = new Map();
+                localStorage.setItem('myMap', JSON.stringify(Array.from(myMap.entries())))
+                window.location.href = 'start';
               }
 
             } else {
-              alert('Ошибка входа в систему');
+              alert('Ошибка входа в систему: пользователь с таким логином уже существует');
             }
           })
           .catch((error) => {

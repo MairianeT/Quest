@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="/img/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/style.css" type="text/css">
+  <meta charset="UTF-8">
+  <meta name="keywords" content="квест, квест по станциям, ar">
+</head>
+
+<body class="body">
+
+
+<header class="header">
+  <p id="name_of_user" style="margin-left: 15px; margin-right: auto"></p>
+  <script src="/scripts/src/nameOfUser.js"></script>
+
+  <h2>Квест по станциям</h2>
+
+  <button id="logoutButton">
+    <svg style="cursor: pointer" width="50px" height="50px" viewBox="0 0 1.5 1.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.625 0.75h0.5m0 0 -0.156 -0.139M1.125 0.75l-0.156 0.139m0.156 -0.444V0.313a0.063 0.063 0 0 0 -0.063 -0.063H0.438a0.063 0.063 0 0 0 -0.063 0.063v0.875a0.063 0.063 0 0 0 0.063 0.063h0.625a0.063 0.063 0 0 0 0.063 -0.063v-0.132" stroke="#464455" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.0625"/></svg>
+  </button>
+  <script src="/scripts/src/logout.js"></script>
+</header>
+
+
+<main id="main">
+  <script>
+    if (!localStorage.getItem('jwtToken')) {
+      alert('Авторизуйтесь в системе');
+      window.location.href = '/';
+    }
+  </script>
+  <table style="margin-top: 50px;
+      grid-template-columns:
+    minmax(150px, 3fr)
+    minmax(150px, 5fr)
+    minmax(150px, 4fr)">
+    <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Количество станций</th>
+      <th>Время</th>
+    </tr>
+    </thead>
+    <tbody  id="results">
+    <template id="result">
+      <tr class="result_line">
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </template>
+  </table>
+  <script src="scripts/src/getResults.js"></script>
+</main>
+
+
+<footer class="footer">
+  <button class="btn1" id="buttonLabel" onclick="isAdmin === 'true' ? StartAdmin() : Start()"></button>
+  <script>
+    function Start() {
+      if (!localStorage.getItem('startTime')) {
+        const now = new Date();
+        const currentTime = now.toLocaleTimeString();
+        localStorage.setItem('startTime', currentTime);
+      }
+      window.location.href = '/ar-camera'
+    }
+    function StartAdmin() {
+      window.location.href = '/admin'
+    }
+    var isAdmin = localStorage.getItem('isAdmin');
+    var buttonLabel = isAdmin === 'true' ? 'Администрирование' : 'Прохождение';
+    document.getElementById('buttonLabel').innerText = buttonLabel;
+  </script>
+</footer>
+</body>
+</html>
