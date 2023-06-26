@@ -35,31 +35,36 @@
   <h2>Квест по станциям</h2>
 
   <button id="logoutButton">
-    <svg style="cursor: pointer" width="50px" height="50px" viewBox="0 0 1.5 1.5" fill="flex" xmlns="http://www.w3.org/2000/svg"><path d="M0.625 0.75h0.5m0 0 -0.156 -0.139M1.125 0.75l-0.156 0.139m0.156 -0.444V0.313a0.063 0.063 0 0 0 -0.063 -0.063H0.438a0.063 0.063 0 0 0 -0.063 0.063v0.875a0.063 0.063 0 0 0 0.063 0.063h0.625a0.063 0.063 0 0 0 0.063 -0.063v-0.132" stroke="#464455" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.0625"/></svg>
+    <svg style="cursor: pointer" width="50px" height="50px" viewBox="0 0 1.5 1.5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.625 0.75h0.5m0 0 -0.156 -0.139M1.125 0.75l-0.156 0.139m0.156 -0.444V0.313a0.063 0.063 0 0 0 -0.063 -0.063H0.438a0.063 0.063 0 0 0 -0.063 0.063v0.875a0.063 0.063 0 0 0 0.063 0.063h0.625a0.063 0.063 0 0 0 0.063 -0.063v-0.132" stroke="#464455" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.0625"/></svg>
   </button>
   <script src="/scripts/src/logout.js"></script>
 </header>
 
 
 <main id="main">
-  <script>
-    fetch('/api/stations').then((response) => response.json()).then((data) => {
-      const animIds = data.map((item) => item.animation);
-      const latitudes = data.map((item) => item.latitude);
-      const longitudes = data.map((item) => item.longitude);
+<!--  <script>-->
+<!--    let latitudes;-->
+<!--    let longitudes;-->
+<!--    let animIds;-->
+<!--    fetch('/api/animations').then((response) => response.json()).then((data) => {-->
+<!--      animIds = data.map((item) => item.animation);-->
+<!--      latitudes = data.map((item) => item.latitude);-->
+<!--      longitudes = data.map((item) => item.longitude);-->
+<!--      console.log(animIds);-->
 
-      const modelViewerContainer = document.getElementById('modelViewerContainer');
+<!--      const modelViewerContainer = document.getElementById('modelViewerContainer');-->
 
-      animIds.forEach(animId => {
-        const modelViewer = document.createElement('model-viewer');
-        modelViewer.setAttribute('class', 'modelViewer');
-        modelViewer.setAttribute('src', `https://drive.google.com/uc?export=download&id=${animId}`);
-        modelViewer.setAttribute('camera-controls', '');
-
-        modelViewerContainer.appendChild(modelViewer);
-    });
-  </script>
-  <div id="modelViewerContainer">
+<!--      animIds.forEach(animId => {-->
+<!--        const modelViewer = document.createElement('model-viewer');-->
+<!--        modelViewer.setAttribute('class', 'modelViewer');-->
+<!--        modelViewer.setAttribute('src', `https://drive.google.com/uc?export=download&id=${animId}`);-->
+<!--        modelViewer.setAttribute('camera-controls', '');-->
+<!--        modelViewer.setAttribute('style', 'z-index: 9999; position: absolute; height: 800px; width: 100%; margin: auto; display: none; justify-content: center')-->
+<!--        modelViewerContainer.appendChild(modelViewer);-->
+<!--    });-->
+<!--    });-->
+<!--  </script>-->
+  <div style="display: flex; position: relative" id="modelViewerContainer">
   </div>
   <model-viewer style="z-index: 9999; position: absolute; height: 800px; width: 100%; margin: auto; display: none; justify-content: center" src="/data/stegosaurs_SStenops.gltf" camera-controls ></model-viewer>
 
@@ -199,7 +204,7 @@
                 width: 2,
               });
               const material = new THREE.MeshPhongMaterial({
-                color: 0x737373,
+                color: 0xeeeeee,
               });
 
               const mesh = new THREE.Mesh(geometry, material);
@@ -251,7 +256,7 @@
         document.getElementById('coor').textContent = position.coords.latitude + ' ' + position.coords.longitude;
 
         const mv = document.querySelector("model-viewer");
-        if (Math.abs(position.coords.latitude - 59.93646) <= 0.00001 && Math.abs(position.coords.longitude - 30.49974) <= 0.00001) {
+        if (Math.abs(position.coords.latitude - 59.9365) <= 0.0001 && Math.abs(position.coords.longitude - 30.4998) <= 0.0001) {
 
           if (mv) {
             mv.style.display = 'flex';

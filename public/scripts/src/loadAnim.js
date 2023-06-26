@@ -77,13 +77,16 @@ const loadAnims = async () => {
         var text2 = parseFloat(document.getElementById('input2').value);
         const dataId = row.getAttribute('data-id');
 
-        fetch(`/api/animations/${dataId}?latitude=${text1}&longitude=${text2}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
+        fetch(
+          `/api/animations/${dataId}?latitude=${text1}&longitude=${text2}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
+            },
           },
-        }).then(() => loadAnims());
+        ).then(() => loadAnims());
 
         modal.style.display = 'none';
       });
