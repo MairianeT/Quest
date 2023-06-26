@@ -22,6 +22,11 @@
 
 <main id="main" style="margin: 60px auto">
 
+  <script>
+    if (localStorage.getItem('jwtToken')) {
+      localStorage.getItem('isAdmin') === 'true' ? window.location.href = '/admin' : window.location.href = '/start'
+    }
+  </script>
   <div class="tab"  id="tab-auth">
     <button class="tablinks" onclick="openTab(event, 'sign-in')" id="defaultOpen">Вход</button>
     <button class="tablinks" onclick="openTab(event, 'sign-up')">Регистрация</button>
