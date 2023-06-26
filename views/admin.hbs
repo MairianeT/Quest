@@ -15,7 +15,7 @@
 <body class="body">
 
 <script>
-  if (!localStorage.getItem('isAdmin')) {
+  if (localStorage.getItem('isAdmin') === 'false') {
     window.location.href = '/';
     alert('You are not admin')
   }
